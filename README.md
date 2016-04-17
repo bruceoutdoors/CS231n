@@ -3,7 +3,7 @@ CS231n Convolutional Neural Networks for Visual Recognition - Assignment Solutio
 
 The course website: http://cs231n.stanford.edu/ 
 
-Here are my solutions for this above course, for the benefit of people who struggle greatly to solve them (like myself).
+Here are my solutions for this above course, for the benefit of people who struggle greatly to solve them (like myself). I do not guarantee that my solutions are correct, so if you spot any errors do let me know.
 
 Assignment list:
 
