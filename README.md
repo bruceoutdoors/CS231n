@@ -26,3 +26,4 @@ Assignment list:
  	* Q3: Image Gradients: Saliency maps and Fooling Images (10 points)
  	* Q4: Image Generation: Classes, Inversion, DeepDream (15 points)
 
+Oh, and you should check out [MyHumbleSelf's Assignment Solutions](https://github.com/MyHumbleSelf/cs231n). This guy is a Stanford student, so his answers would likely be what you will get if you enrolled yourself.
