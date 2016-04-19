@@ -44,7 +44,7 @@ def svm_loss_naive(W, X, y, reg):
   # to be an average instead so we divide by num_train.
   loss /= num_train
   dW /= num_train
-
+  dW += reg*W # regularize the weights
   # Add regularization to the loss.
   loss += 0.5 * reg * np.sum(W * W)
 
@@ -134,6 +134,7 @@ def svm_loss_vectorized(W, X, y, reg):
   dW = X.T.dot(X_mask) + correct_classes.T.dot(y_mask)
 
   dW /= num_train # average out weights
+  dW += reg*W # regularize the weights
   #############################################################################
   #                             END OF YOUR CODE                              #
   #############################################################################
