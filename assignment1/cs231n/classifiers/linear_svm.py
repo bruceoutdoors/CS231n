@@ -113,10 +113,10 @@ def svm_loss_vectorized(W, X, y, reg):
   # loss.                                                                     #
   #############################################################################
 
-  diff_counts = np.sum(margins > 0, axis=1)
-  correct_classes = -diff_counts[:, np.newaxis] * X
 
   # Semi-vectorized version. It's only slightly faster than the loop version.
+  # diff_counts = np.sum(margins > 0, axis=1)
+  # correct_classes = -diff_counts[:, np.newaxis] * X
   # num_classes = W.shape[1]
   # for j in xrange(num_classes):
   #   # use the indices of the margin array as a mask:
@@ -124,14 +124,15 @@ def svm_loss_vectorized(W, X, y, reg):
   #   correct_mask = np.where(y == j)
   #   dW[:, j] = np.sum(X[incorrect_mask], axis=0) + np.sum(correct_classes[correct_mask], axis=0)
 
-  # Fully vectorized version. Roughly 5x faster.
-  # I don't exactly understand how it works or how I solved it... :P
-  X_mask = np.zeros(margins.shape, dtype=bool)
-  y_mask = np.zeros(margins.shape, dtype=bool)
-  nzm = np.nonzero(margins)
-  X_mask[nzm[0], nzm[1]] = 1
-  y_mask[np.arange(num_train), y] = 1
-  dW = X.T.dot(X_mask) + correct_classes.T.dot(y_mask)
+  # Fully vectorized version. Roughly 10x faster.
+  X_mask = np.zeros(margins.shape)
+  # column maps to class, row maps to sample; a value v in X_mask[i, j]
+  # adds a row sample i to column class j with multiple of v
+  X_mask[margins > 0] = 1
+  # for each sample, find the total number of classes where margin > 0
+  incorrect_counts = np.sum(X_mask, axis=1)
+  X_mask[np.arange(num_train), y] = -incorrect_counts
+  dW = X.T.dot(X_mask)
 
   dW /= num_train # average out weights
   dW += reg*W # regularize the weights
