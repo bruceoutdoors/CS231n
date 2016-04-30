@@ -34,22 +34,21 @@ def softmax_loss_naive(W, X, y, reg):
   loss = 0.0
   for i in xrange(num_train):
     # Compute vector of scores
-    f_i = X[i].dot(W) # in R^{num_classes}
+    f_i = X[i].dot(W)
 
     # Normalization trick to avoid numerical instability, per http://cs231n.github.io/linear-classify/#softmax
-    log_c = np.max(f_i)
-    f_i -= log_c
+    f_i -= np.max(f_i)
 
     # Compute loss (and add to it, divided later)
-    # L_i = - f(x_i)_{y_i} + log \sum_j e^{f(x_i)_j}
     sum_j = np.sum(np.exp(f_i))
-    loss += -f_i[y[i]] + np.log(sum_j)
+    p = lambda k: np.exp(f_i[k]) / sum_j
+    loss += -np.log(p(y[i]))
 
     # Compute gradient
     # Here we are computing the contribution to the inner sum for a given i.
     for k in range(num_classes):
-      p = np.exp(f_i[k]) / sum_j
-      dW[:, k] += (p - (k == y[i])) * X[i]
+      p_k = p(k)
+      dW[:, k] += (p_k - (k == y[i])) * X[i]
 
   loss /= num_train
   loss += 0.5 * reg * np.sum(W * W)
@@ -80,12 +79,12 @@ def softmax_loss_vectorized(W, X, y, reg):
   #############################################################################
   num_train = X.shape[0]
   f = X.dot(W)
-  log_c = np.max(f, axis=1)
-  f -= log_c[:, np.newaxis]
+  f -= np.max(f, axis=1)[:, np.newaxis] # max of every sample
   sum_f = np.sum(np.exp(f), axis=1)
-  loss = np.sum(-f[np.arange(num_train), y] + np.log(sum_f))
+  p = np.exp(f)/sum_f[:, np.newaxis]
 
-  p = np.exp(f)/np.sum(np.exp(f), axis=1)[:, np.newaxis]
+  loss = np.sum(-np.log(p[np.arange(num_train), y]))
+
   ind = np.zeros_like(p)
   ind[np.arange(num_train), y] = 1
   dW = X.T.dot(p - ind)
