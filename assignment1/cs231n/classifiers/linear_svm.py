@@ -114,15 +114,14 @@ def svm_loss_vectorized(W, X, y, reg):
   #############################################################################
 
 
-  # Semi-vectorized version. It's only slightly faster than the loop version.
-  # diff_counts = np.sum(margins > 0, axis=1)
-  # correct_classes = -diff_counts[:, np.newaxis] * X
+  # Semi-vectorized version. It's not any faster than the loop version.
   # num_classes = W.shape[1]
-  # for j in xrange(num_classes):
-  #   # use the indices of the margin array as a mask:
-  #   incorrect_mask = np.nonzero(margins[:, j])
-  #   correct_mask = np.where(y == j)
-  #   dW[:, j] = np.sum(X[incorrect_mask], axis=0) + np.sum(correct_classes[correct_mask], axis=0)
+  # incorrect_counts = np.sum(margins > 0, axis=1)
+  # for k in xrange(num_classes):
+  #   # use the indices of the margin array as a mask.
+  #   wj = np.sum(X[margins[:, k] > 0], axis=0)
+  #   wy = np.sum(-incorrect_counts[y == k][:, np.newaxis] * X[y == k], axis=0)
+  #   dW[:, k] = wj + wy
 
   # Fully vectorized version. Roughly 10x faster.
   X_mask = np.zeros(margins.shape)
