@@ -79,9 +79,9 @@ def softmax_loss_vectorized(W, X, y, reg):
   #############################################################################
   num_train = X.shape[0]
   f = X.dot(W)
-  f -= np.max(f, axis=1)[:, np.newaxis] # max of every sample
-  sum_f = np.sum(np.exp(f), axis=1)
-  p = np.exp(f)/sum_f[:, np.newaxis]
+  f -= np.max(f, axis=1, keepdims=True) # max of every sample
+  sum_f = np.sum(np.exp(f), axis=1, keepdims=True)
+  p = np.exp(f)/sum_f
 
   loss = np.sum(-np.log(p[np.arange(num_train), y]))
 

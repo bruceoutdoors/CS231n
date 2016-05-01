@@ -128,7 +128,7 @@ class KNearestNeighbor(object):
     #~ dists = np.sqrt((diff ** 2).sum(axis=2))
     
     # split (p-q)^2 to p^2 + q^2 - 2pq
-    dists = np.sqrt((X**2).sum(axis=1)[:, np.newaxis] + (self.X_train**2).sum(axis=1) - 2 * X.dot(self.X_train.T))
+    dists = np.sqrt((X**2).sum(axis=1, keepdims=True) + (self.X_train**2).sum(axis=1) - 2 * X.dot(self.X_train.T))
     
     #########################################################################
     #                         END OF YOUR CODE                              #
