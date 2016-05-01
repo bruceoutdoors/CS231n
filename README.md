@@ -14,7 +14,7 @@ Assignment list:
  	* Q2: Training a Support Vector Machine (25 points) [***done!***]
  	* Q3: Implement a Softmax classifier (20 points) [***done!***]
  	* Q4: Two-Layer Neural Network (25 points) [***done!***]
- 	* Q5: Higher Level Representations: Image Features (10 points)
+ 	* Q5: Higher Level Representations: Image Features (10 points) [***done!***]
  * Assignment #2
  	* Q1: Fully-connected Neural Network (30 points)
  	* Q2: Batch Normalization (30 points)
